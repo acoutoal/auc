@@ -13,13 +13,11 @@
 #Q1 and Q2 are estimated by:
 #Q1 = A / (2 - A)
 #Q2 = 2A*A / (1 + A)
-
+# x -- Vector or continuous variables -- the score of each observation
+# y -- Vector of binary variables with domain 1 or 0 -- the class of each observation
 aucse<-function(x,y)
 {
 #calculate AUC
-W=na.omit(cbind(x,y));
-x=W[,1]
-y=W[,2]
 x1 = x[y==1]; n1 = length(x1)+1E-19; na=n1;
 x2 = x[y==0]; n2 = length(x2)+1E-19; nn=n2;
 r = rank(c(x1,x2))
@@ -31,6 +29,8 @@ Q2 = 2*A*A / (1 + A);
 numer= A*(1-A) + (na-1)*(Q1 - A*A) + (nn-1)*(Q2 - A*A);
 denom= na*nn;
 se= sqrt(numer/denom);
+
+#Calculate 95% C.I.
 hi=A+se*1.96       #95% c.i.
 lo=A-se*1.96       #95% c.i.
 
